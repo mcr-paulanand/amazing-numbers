@@ -1,13 +1,15 @@
 package numbers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static numbers.NumberProperty.NUMBER_PROPERTIES;
 import static numbers.NumberProperty.EXCLUSIVE_PROPERTIES;
 import static numbers.PrintOutput.printSupportedRequests;
 
 final class InputValidation {
-    static boolean isInputInvalid(int numberOfInputs, long number, int consecutiveNumbers, String[] properties) {
+    static boolean isInputInvalid(int numberOfInputs, long number, int consecutiveNumbers, ArrayList<String> properties) {
         if (numberOfInputs == 0) {
             printSupportedRequests();
             return true;
@@ -23,21 +25,21 @@ final class InputValidation {
             return true;
         }
 
-        if (numberOfInputs == 3 && isPropertyInvalid(properties[0])) {
-            System.out.println("The property [" + properties[0] + "] is wrong.");
+        if (numberOfInputs == 3 && isPropertyInvalid(properties.get(0))) {
+            System.out.println("The property [" + properties.get(0) + "] is wrong.");
             System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
             return true;
         }
 
         if (numberOfInputs == 4) {
-            if (isPropertyInvalid(properties[0]) || isPropertyInvalid(properties[1])) {
+            if (isPropertyInvalid(properties)) {
 
-                if (isPropertyInvalid(properties[0]) && isPropertyInvalid(properties[1])) {
-                    System.out.println("The properties " + Arrays.toString(properties) + " are wrong.");
-                } else if (isPropertyInvalid(properties[0])) {
-                    System.out.println("The property [" + properties[0] + "] is wrong.");
-                } else if (isPropertyInvalid(properties[1])) {
-                    System.out.println("The property [" + properties[1] + "] is wrong.");
+                if (isPropertyInvalid(properties.get(0)) && isPropertyInvalid(properties.get(1))) {
+                    System.out.println("The properties " + properties + " are wrong.");
+                } else if (isPropertyInvalid(properties.get(0))) {
+                    System.out.println("The property [" + properties.get(0) + "] is wrong.");
+                } else if (isPropertyInvalid(properties.get(1))) {
+                    System.out.println("The property [" + properties.get(1) + "] is wrong.");
                 }
 
                 System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
@@ -45,7 +47,7 @@ final class InputValidation {
             }
 
             if (isPropertyExclusive(properties)) {
-                System.out.println("The request contains mutually exclusive properties: " + Arrays.toString(properties));
+                System.out.println("The request contains mutually exclusive properties: " + properties);
                 System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
                 return true;
             }
@@ -69,11 +71,13 @@ final class InputValidation {
         return !Arrays.asList(NUMBER_PROPERTIES).contains(property);
     }
 
-    private static boolean isPropertyExclusive(String[] properties) {
-        Arrays.sort(properties);
+    private static boolean isPropertyInvalid(ArrayList<String> properties) {
+        return !Arrays.asList(NUMBER_PROPERTIES).containsAll(properties);
+    }
+
+    private static boolean isPropertyExclusive(ArrayList<String> properties) {
         for (String[] exclusiveProperty : EXCLUSIVE_PROPERTIES) {
-            Arrays.sort(exclusiveProperty);
-            if (Arrays.equals(exclusiveProperty, properties)) return true;
+            if (properties.containsAll(List.of(exclusiveProperty))) return true;
         }
         return false;
     }

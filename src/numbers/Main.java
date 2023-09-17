@@ -60,10 +60,10 @@ public class Main {
                     numbers = getNumbers(number, consecutiveNumbers, properties.get(0));
                     printNumberProperties(numbers);
                     break;
-                /*case 4:
+                case 4:
                     numbers = getNumbers(number, consecutiveNumbers, properties);
                     printNumberProperties(numbers);
-                    break;*/
+                    break;
             }
         }
     }

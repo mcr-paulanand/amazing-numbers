@@ -1,6 +1,7 @@
 package numbers;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 class NumberArray {
     static long[] getNumbers(long number, int consecutiveNumbers) {
@@ -38,6 +39,24 @@ class NumberArray {
 
             for (int i = 0; i < consecutiveNumbers; ) {
                 if ((boolean) method0.invoke(null, number) && (boolean) method1.invoke(null, number)) {
+                    numbers[i] = number;
+                    i++;
+                }
+                number++;
+            }
+        } catch (Exception ignored) {}
+        return numbers;
+    }
+
+    static long[] getNumbers(long number, int consecutiveNumbers, ArrayList<String> properties) {
+        long[] numbers = new long[consecutiveNumbers];
+
+        try {
+            for (int i = 0; i < consecutiveNumbers; ) {
+                for (String property : properties) {
+                    if (!(boolean) NumberProperty.class.getDeclaredMethod(getNumberPropertyMethodName(property), long.class).invoke(null, number)) {
+                        break;
+                    }
                     numbers[i] = number;
                     i++;
                 }
