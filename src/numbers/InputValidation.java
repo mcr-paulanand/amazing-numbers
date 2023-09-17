@@ -15,39 +15,11 @@ final class InputValidation {
             return true;
         }
 
-        if (numberOfInputs >= 1 && isNotNaturalNumber(number)) {
-            System.out.println("The first parameter should be a natural number or zero.");
-            return true;
-        }
+        if (numberOfInputs >= 1 && isNumberInvalid(number)) return true;
+        if (numberOfInputs >= 2 && isConsecutiveNumberInvalid(consecutiveNumbers)) return true;
+        if (numberOfInputs == 3 && isPropertyInvalid(properties)) return true;
+        if (numberOfInputs >= 4 && (isPropertyInvalid(properties) || isPropertyExclusive(properties))) return true;
 
-        if (numberOfInputs >= 2 && isNotNaturalNumber(consecutiveNumbers)) {
-            System.out.println("The second parameter should be a natural number.");
-            return true;
-        }
-
-        if (numberOfInputs == 3 && isPropertyInvalid(properties.get(0))) {
-            System.out.println("The property [" + properties.get(0) + "] is wrong.");
-            System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
-            return true;
-        }
-
-        if (numberOfInputs >= 4) {
-            int numberOfWrongProperties;
-            for (String property : properties) {
-                if (isPropertyInvalid(property)) {
-                    System.out.println("The property [" + property + "] is wrong.");
-                }
-
-                System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
-                return true;
-            }
-
-            if (isPropertyExclusive(properties)) {
-                System.out.println("The request contains mutually exclusive properties: " + properties);
-                System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
-                return true;
-            }
-        }
         return false;
     }
 
@@ -59,8 +31,21 @@ final class InputValidation {
         return false;
     }
 
-    private static boolean isNotNaturalNumber(long number) {
-        return number <= 0;
+    private static boolean isNumberInvalid(long number) {
+        if (number < 0) {
+            System.out.println("The first parameter should be a natural number or zero.");
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private static boolean isConsecutiveNumberInvalid(long number) {
+        if (number <= 0) {
+            System.out.println("The second parameter should be a natural number.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static boolean isPropertyInvalid(String property) {
@@ -83,16 +68,22 @@ final class InputValidation {
                 return false;
             case 1:
                 System.out.println("The property " + wrongProperties + " is wrong.");
+                System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
                 return true;
             default:
                 System.out.println("The properties " + wrongProperties + " are wrong.");
+                System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
                 return true;
         }
     }
 
     private static boolean isPropertyExclusive(ArrayList<String> properties) {
         for (String[] exclusiveProperty : EXCLUSIVE_PROPERTIES) {
-            if (properties.containsAll(List.of(exclusiveProperty))) return true;
+            if (properties.containsAll(List.of(exclusiveProperty))) {
+                System.out.println("The request contains mutually exclusive properties: " + Arrays.toString(exclusiveProperty));
+                System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
+                return true;
+            }
         }
         return false;
     }
