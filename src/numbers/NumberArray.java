@@ -53,12 +53,15 @@ class NumberArray {
 
         try {
             for (int i = 0; i < consecutiveNumbers; ) {
-                for (String property : properties) {
-                    if (!(boolean) NumberProperty.class.getDeclaredMethod(getNumberPropertyMethodName(property), long.class).invoke(null, number)) {
+                for (int p = 0; p < properties.size(); p++) {
+                    if (!(boolean) NumberProperty.class.getDeclaredMethod(getNumberPropertyMethodName(properties.get(p)), long.class).invoke(null, number)) {
                         break;
                     }
-                    numbers[i] = number;
-                    i++;
+
+                    if (p == properties.size() - 1) {
+                        numbers[i] = number;
+                        i++;
+                    }
                 }
                 number++;
             }

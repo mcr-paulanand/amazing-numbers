@@ -56,11 +56,7 @@ public class Main {
                     numbers = getNumbers(number, consecutiveNumbers);
                     printNumberProperties(numbers);
                     break;
-                case 3:
-                    numbers = getNumbers(number, consecutiveNumbers, properties.get(0));
-                    printNumberProperties(numbers);
-                    break;
-                case 4:
+                default:
                     numbers = getNumbers(number, consecutiveNumbers, properties);
                     printNumberProperties(numbers);
                     break;
