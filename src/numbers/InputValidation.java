@@ -31,15 +31,11 @@ final class InputValidation {
             return true;
         }
 
-        if (numberOfInputs == 4) {
-            if (isPropertyInvalid(properties)) {
-
-                if (isPropertyInvalid(properties.get(0)) && isPropertyInvalid(properties.get(1))) {
-                    System.out.println("The properties " + properties + " are wrong.");
-                } else if (isPropertyInvalid(properties.get(0))) {
-                    System.out.println("The property [" + properties.get(0) + "] is wrong.");
-                } else if (isPropertyInvalid(properties.get(1))) {
-                    System.out.println("The property [" + properties.get(1) + "] is wrong.");
+        if (numberOfInputs >= 4) {
+            int numberOfWrongProperties;
+            for (String property : properties) {
+                if (isPropertyInvalid(property)) {
+                    System.out.println("The property [" + property + "] is wrong.");
                 }
 
                 System.out.println("Available properties: " + Arrays.toString(NUMBER_PROPERTIES));
@@ -72,7 +68,26 @@ final class InputValidation {
     }
 
     private static boolean isPropertyInvalid(ArrayList<String> properties) {
-        return !Arrays.asList(NUMBER_PROPERTIES).containsAll(properties);
+        int numberOfWrongProperties = 0;
+        ArrayList<String> wrongProperties = new ArrayList<>();
+
+        for (String property : properties) {
+            if (isPropertyInvalid(property)) {
+                numberOfWrongProperties++;
+                wrongProperties.add(property);
+            }
+        }
+
+        switch (numberOfWrongProperties) {
+            case 0:
+                return false;
+            case 1:
+                System.out.println("The property " + wrongProperties + " is wrong.");
+                return true;
+            default:
+                System.out.println("The properties " + wrongProperties + " are wrong.");
+                return true;
+        }
     }
 
     private static boolean isPropertyExclusive(ArrayList<String> properties) {
